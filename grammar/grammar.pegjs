@@ -17,6 +17,8 @@ parsingExpression
   = name
   / string
   / range
+  / group
+  / zeroOrMore
 
 string
 	= ["] [^"]* ["]
@@ -26,6 +28,13 @@ range = "[" input_range+ "]"
 
 input_range = [^[\]-] "-" [^[\]-]
 			/ [^[\]]+
+
+group
+  = "(" _ choice _ ")"
+
+zeroOrMore
+  = string _ "*" { return { type: 'zeroOrMore', value: text() }; }
+
 
 name "identificador"
   = [_a-z]i[_a-z0-9]i*
